@@ -3,6 +3,15 @@
 No es una base de datos de negocio (esa es Supabase, del Día 4) — es un lugar compartible con tu
 equipo donde quedan resúmenes, resultados y bitácora de lo que tu automatización hizo.
 
+**Qué hace el workflow de esta carpeta, literal:** si le das "Execute workflow" a
+`guardar-en-notion-referencia.json` tal cual viene, sin tocar nada, va a crear **una página nueva
+en tu base de Notion** con datos de ejemplo ya armados (fecha de hoy, tipo "Resumen diario", un
+texto de resumen inventado, etc.) — eso es todo lo que hace por sí solo, y es intencional: es una
+plantilla para comprobar que la conexión con Notion funciona antes de conectarle datos reales. El
+paso siguiente es reemplazar el nodo "Preparar resumen" (Code) por datos reales — el historial de
+Telegram del día, el resultado de una consulta a la API de n8n, o lo que te devuelva Hermes — eso
+es lo que convierte la plantilla en uno de los tres ejemplos reales de abajo (A, B o C).
+
 ## La base de datos en Notion — créala primero, antes de importar el flujo
 
 Una sola base de datos con estas propiedades exactas (los nombres importan, el flujo los busca

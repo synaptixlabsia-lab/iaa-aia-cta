@@ -1,5 +1,17 @@
 # Mini-proyecto 3 — RAG híbrido (búsqueda exacta + vectorial)
 
+**Qué problema resuelve, en una frase:** el RAG del Día 4 solo busca "por significado" y a veces
+falla con cosas literales (un código de plan, un nombre exacto de política) — este mini-proyecto
+agrega un primer intento de búsqueda por texto exacto, y solo si eso no encuentra nada, cae a la
+búsqueda por significado de siempre.
+
+**Cómo se ve que funciona (la respuesta en Telegram se ve igual en ambos casos, así que hay que
+mirar la ejecución):** pregunta algo con una palabra exacta del documento, abre la ejecución en
+n8n (ícono de reloj) y confirma que el nodo "Buscar coincidencia exacta" ya trajo resultados —
+el agente ni llega a usar la herramienta vectorial. Después pregunta lo mismo pero parafraseado:
+ese nodo debe volver vacío, y ahí sí se activa la búsqueda vectorial. Esa comparación es la
+prueba de que el patrón híbrido está funcionando, no solo la respuesta final.
+
 **Estado: en construcción / el más avanzado del día.** No pasa nada si no lo terminas — el
 objetivo es entender el patrón, no que quede 100% funcionando.
 
