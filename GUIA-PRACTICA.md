@@ -25,10 +25,25 @@ docker run -d --name hermes --restart unless-stopped \
   -v ~/.hermes:/opt/data \
   -p 9119:9119 \
   -e HERMES_DASHBOARD=1 -e HERMES_DASHBOARD_HOST=0.0.0.0 \
+  -e HERMES_DASHBOARD_BASIC_AUTH_USERNAME=alumno \
+  -e HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=cambia-esta-clave \
   nousresearch/hermes-agent gateway run
 ```
 
-Entrar por navegador a `http://localhost:9119`. Si no tienes navegador gráfico (servidor Linux sin
+En Windows (PowerShell), el mismo comando en una sola línea con `$HOME` en vez de `~`:
+
+```powershell
+docker run -d --name hermes --restart unless-stopped -v $HOME/.hermes:/opt/data -p 9119:9119 -e HERMES_DASHBOARD=1 -e HERMES_DASHBOARD_HOST=0.0.0.0 -e HERMES_DASHBOARD_BASIC_AUTH_USERNAME=alumno -e HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=cambia-esta-clave nousresearch/hermes-agent gateway run
+```
+
+**Las dos líneas `HERMES_DASHBOARD_BASIC_AUTH_*` son obligatorias** — sin ellas Hermes se niega a
+exponer el dashboard en `0.0.0.0` (confirmado probándolo en vivo) y `localhost:9119` nunca
+responde. Cambien `alumno`/`cambia-esta-clave` por lo suyo; se puede cambiar después recreando el
+contenedor (`docker rm -f hermes` + repetir el comando con la clave nueva), sin perder nada porque
+todo vive en `~/.hermes`.
+
+Entrar por navegador a `http://localhost:9119` (les pide el usuario/clave de arriba). Si no tienes
+navegador gráfico (servidor Linux sin
 GUI), el Dashboard también permite subir/descargar archivos directo desde ahí — no hace falta la
 app Desktop.
 
