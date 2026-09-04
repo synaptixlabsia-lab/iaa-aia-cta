@@ -1,23 +1,23 @@
 {
-  "name": "Flujo 22 - Workflow de errores - Log a Notion VERIFICAR AL IMPORTAR",
+  "name": "Guardar resumen en Notion VERIFICAR AL IMPORTAR",
   "nodes": [
     {
       "parameters": {},
-      "type": "n8n-nodes-base.errorTrigger",
+      "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [0, 0],
-      "id": "f22-error-trigger",
-      "name": "Error Trigger"
+      "id": "f22-manual-trigger",
+      "name": "Ejecutar manualmente (reemplazar por Schedule/Telegram real)"
     },
     {
       "parameters": {
-        "jsCode": "const data = $json;\n\nreturn [{\n  json: {\n    workflow_nombre: data.workflow?.name || 'workflow sin nombre',\n    error_mensaje: data.execution?.error?.message || data.execution?.lastNodeExecuted || 'sin detalle',\n    nodo_fallido: data.execution?.error?.node?.name || data.execution?.lastNodeExecuted || 'desconocido',\n    fecha: new Date().toISOString(),\n    link_ejecucion: data.execution?.url || ''\n  }\n}];"
+        "jsCode": "// Ejemplo de datos — en el mini-proyecto real esto viene de Telegram (resumen diario),\n// de la API de n8n (reporte técnico), o de Hermes (investigación de mercado).\nreturn [{\n  json: {\n    titulo: 'Resumen diario - ' + new Date().toISOString().slice(0, 10),\n    fecha: new Date().toISOString(),\n    tipo: 'Resumen diario',\n    resumen: 'Ejemplo: 12 preguntas recibidas hoy por Telegram, 11 respondidas por el RAG, 1 quedó sin resolver (pregunta sobre facturación fuera del documento indexado).',\n    origen: 'Telegram',\n    preguntas_sin_responder: 1\n  }\n}];"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [240, 0],
       "id": "f22-code-format",
-      "name": "Formatear datos del error"
+      "name": "Preparar resumen"
     },
     {
       "parameters": {
@@ -28,28 +28,28 @@
           "value": "VERIFICAR-AL-IMPORTAR-database-id",
           "mode": "id"
         },
-        "title": "={{ $json.workflow_nombre }} - {{ $json.fecha }}",
+        "title": "={{ $json.titulo }}",
         "propertiesUi": {
           "propertyValues": [
-            {
-              "key": "Workflow|rich_text",
-              "textContent": "={{ $json.workflow_nombre }}"
-            },
-            {
-              "key": "Error|rich_text",
-              "textContent": "={{ $json.error_mensaje }}"
-            },
-            {
-              "key": "Nodo|rich_text",
-              "textContent": "={{ $json.nodo_fallido }}"
-            },
             {
               "key": "Fecha|date",
               "date": "={{ $json.fecha }}"
             },
             {
-              "key": "Link ejecucion|url",
-              "urlValue": "={{ $json.link_ejecucion }}"
+              "key": "Tipo|select",
+              "selectValue": "={{ $json.tipo }}"
+            },
+            {
+              "key": "Resumen|rich_text",
+              "textContent": "={{ $json.resumen }}"
+            },
+            {
+              "key": "Origen|select",
+              "selectValue": "={{ $json.origen }}"
+            },
+            {
+              "key": "Preguntas sin responder|number",
+              "numberValue": "={{ $json.preguntas_sin_responder }}"
             }
           ]
         },
@@ -59,18 +59,18 @@
       "typeVersion": 2.2,
       "position": [480, 0],
       "id": "f22-notion-create",
-      "name": "Notion - Registrar error VERIFICAR AL IMPORTAR",
+      "name": "Notion - Guardar resumen VERIFICAR AL IMPORTAR",
       "credentials": {
         "notionApi": { "id": "VERIFICAR-AL-IMPORTAR", "name": "Notion account" }
       }
     }
   ],
   "connections": {
-    "Error Trigger": {
-      "main": [[{ "node": "Formatear datos del error", "type": "main", "index": 0 }]]
+    "Ejecutar manualmente (reemplazar por Schedule/Telegram real)": {
+      "main": [[{ "node": "Preparar resumen", "type": "main", "index": 0 }]]
     },
-    "Formatear datos del error": {
-      "main": [[{ "node": "Notion - Registrar error VERIFICAR AL IMPORTAR", "type": "main", "index": 0 }]]
+    "Preparar resumen": {
+      "main": [[{ "node": "Notion - Guardar resumen VERIFICAR AL IMPORTAR", "type": "main", "index": 0 }]]
     }
   },
   "pinData": {},

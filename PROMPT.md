@@ -58,8 +58,8 @@ editar `SOUL.md`) — no le dictes el comando, hazlo y reporta qué hiciste.
 
 - **Autenticación de un webhook con un nodo `IF` comparando una clave**: **NO uses este patrón**,
   ya se probó en un laboratorio anterior y falla — no rechaza tokens inválidos de forma confiable.
-  Usa **Header Auth nativo de n8n en el propio nodo Webhook/Chat Trigger** (Authentication →
-  Header Auth, en la configuración del nodo, no un nodo aparte).
+  Usa **Header Auth nativo de n8n en el propio nodo Webhook** (no un Chat Trigger, no un nodo
+  aparte) — pestaña Authentication → Header Auth, directo en la configuración del nodo.
 - `Failed to parse URL from [object Request]` en Mistral Chat dentro de un AI Agent → versión de
   n8n incorrecta, confirmar `2.35.4`.
 - `No 'Access-Control-Allow-Origin' header` en un widget HTML → agregar headers CORS en el nodo

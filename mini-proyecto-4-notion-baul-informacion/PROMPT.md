@@ -20,16 +20,19 @@ Verifica junto al usuario que la página apareció en Notion antes de reportarlo
 
 ## Camino B — Vía n8n (si el usuario prefiere que n8n escriba directo)
 
-`guardar-en-notion-referencia.json` está pensado originalmente para errores (dispara con un Error
-Trigger). Para este mini-proyecto, adáptalo: cambia el trigger por el que corresponda (puede ser
-el mismo flujo de consulta del mini-proyecto 1, agregando un paso al final que escriba en Notion
-cada vez que responde), y ajusta las propiedades del nodo Notion a las columnas reales de la base
-de Notion del usuario — no asumas nombres de columna, pregúntale cuáles tiene.
+Antes de importar `guardar-en-notion-referencia.json`, asegúrate de que el usuario ya creó la
+base de datos en Notion con las 5 propiedades exactas de `README.md` (Fecha, Tipo, Resumen,
+Origen, Preguntas sin responder) — el flujo las busca por esos nombres exactos.
 
-**Advertencia**: el nodo Notion de este archivo está marcado `VERIFICAR AL IMPORTAR` porque nunca
-se probó contra una base de Notion real — las propiedades exactas (`rich_text`, `date`, etc.)
-pueden no coincidir con la versión de n8n instalada. Ajusta contra la base real del usuario, no
-copies el archivo tal cual.
+El flujo ya viene con datos de ejemplo reales en el nodo "Preparar resumen" (Code) — pruébalo tal
+cual primero con "Execute workflow" para confirmar que la página aparece en Notion con todos los
+campos llenos, **antes** de conectarlo a un trigger real (Telegram, Schedule, o el resultado de
+Hermes). Solo después de esa prueba, reemplaza el nodo "Ejecutar manualmente" por el trigger que
+corresponda al ejemplo (A, B o C de abajo).
+
+**Advertencia**: el nodo Notion está marcado `VERIFICAR AL IMPORTAR` porque cada base de Notion
+puede tener el `databaseId` distinto — pide al usuario el ID de su base real (Compartir → Copiar
+enlace, el ID va en la URL) y actualiza el nodo antes de ejecutar.
 
 ## Fase 3 — Los tres ejemplos, uno por uno
 

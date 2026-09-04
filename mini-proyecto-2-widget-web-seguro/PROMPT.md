@@ -9,29 +9,25 @@ usuario entienda la conexión y la seguridad.
 - `chat-widget.html` — el HTML del widget, con el header `X-Secret-Key` ya integrado en el
   `fetch`. Cada quien reemplaza `N8N_CHAT_URL` y `SECRET_KEY` con sus propios valores — nunca se
   pegan esos valores en el repo.
-- `webhook-con-header-auth.json` — el flujo, con el nodo Chat Trigger configurado para
-  `authentication: headerAuth`.
+- `webhook-con-header-auth.json` — el flujo, con un nodo **Webhook normal** (no un Chat Trigger)
+  configurado para `authentication: headerAuth`, más un nodo Set (`Preparar Input`) que extrae
+  `chatInput`/`sessionId` del body, y un `Respond to Webhook` al final que devuelve JSON.
 
-## ⚠️ Verificar al importar — punto no confirmado
+## El `path` del Webhook — cámbialo al importar
 
-No está verificado si la versión de Chat Trigger instalada soporta `Header Auth` nativo igual que
-un Webhook normal (el langchain Chat Trigger es más nuevo y puede tener menos opciones de
-autenticación que el Webhook base de n8n). **Antes de prometerle al grupo que funciona, ábrelo y
-confirma en la pestaña Authentication del nodo qué opciones aparecen de verdad.** Si Header Auth
-no está disponible ahí, la alternativa validada es: usar un nodo **Webhook normal** (no Chat
-Trigger) con Header Auth, y dentro del flujo llamar al AI Agent mediante un sub-workflow o
-armando el mismo patrón de agente manualmente — repórtalo como `Bloqueado` con la razón exacta si
-no puedes armarlo, no fuerces algo que no confirmaste.
+El nodo Webhook trae un `path` de ejemplo (`pruebawebhook-conectanet`). Al importar, cada quien
+puede dejarlo así para probar rápido o cambiarlo por algo propio — es un campo de texto libre en la
+pestaña principal del nodo, no hace falta editar el JSON a mano.
 
 ## Fase 1 — Ajustar el HTML a los datos reales del usuario
 
-Pide la URL real del Chat Trigger (Producción, no la de prueba) y la clave secreta que va a usar,
-y actualiza `N8N_CHAT_URL` y `SECRET_KEY` en `chat-widget.html`.
+Activa el flujo (o usa la URL de prueba) para obtener la URL real del Webhook, y actualiza
+`N8N_CHAT_URL` y `SECRET_KEY` en `chat-widget.html` con esa URL y la clave que definas.
 
 ## Fase 2 — Importar y configurar el workflow con Header Auth real
 
-Importa `webhook-con-header-auth.json`. En el nodo Chat Trigger, sigue la verificación de arriba
-antes de nada. Configura la credencial Header Auth con el mismo valor de clave que pusiste en el
+Importa `webhook-con-header-auth.json`. En el nodo Webhook, pestaña Authentication, confirma que
+está en `Header Auth` y configura la credencial con el mismo valor de clave que pusiste en el
 HTML — **nunca un nodo `IF` comparando la clave** (ver la corrección de seguridad en `PROMPT.md`
 de la raíz del repo, ya se probó que ese patrón falla).
 
@@ -50,11 +46,11 @@ pública del túnel de n8n del Día 4, y prueba desde el chat de Hermes mismo o 
 
 ```text
 Lee mini-proyecto-2. No tengo un HTML de partida — constrúyeme uno simple que
-mande mensajes al Chat Trigger de mi n8n. Muéstramelo antes de guardarlo.
+mande mensajes al Webhook de mi n8n. Muéstramelo antes de guardarlo.
 ```
 
 ```text
-Configura Header Auth real en el nodo Chat Trigger de mi flujo de consulta —
+Configura Header Auth real en el nodo Webhook de mi flujo de consulta —
 nunca un nodo IF comparando la clave, eso ya se probó que falla. Ayúdame a
 generar la clave secreta y ponla solo en la credencial de n8n, no en ningún
 archivo del repo.

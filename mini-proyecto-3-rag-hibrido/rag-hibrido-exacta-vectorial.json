@@ -17,22 +17,29 @@
     },
     {
       "parameters": {
-        "method": "POST",
-        "url": "https://TU-PROYECTO.supabase.co/rest/v1/rpc/search_exact",
-        "authentication": "genericCredentialType",
-        "genericAuthType": "httpHeaderAuth",
-        "sendBody": true,
-        "specifyBody": "json",
-        "jsonBody": "={{ { search_text: $json.message.text, match_count: 5 } }}",
-        "options": {}
+        "operation": "getAll",
+        "tableId": "documents",
+        "returnAll": false,
+        "limit": 5,
+        "filterType": "manual",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "content",
+              "condition": "ilike",
+              "keyValue": "={{ '%' + $json.message.text + '%' }}"
+            }
+          ]
+        }
       },
-      "type": "n8n-nodes-base.httpRequest",
-      "typeVersion": 4.4,
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
       "position": [240, 0],
-      "id": "hib-http-exact",
-      "name": "Buscar coincidencias exactas VERIFICAR AL IMPORTAR",
+      "id": "hib-supabase-exact",
+      "name": "Buscar coincidencia exacta VERIFICAR AL IMPORTAR",
       "credentials": {
-        "httpHeaderAuth": { "id": "VERIFICAR-AL-IMPORTAR", "name": "Supabase service role (header apikey)" }
+        "supabaseApi": { "id": "f15-supabase-cred-id", "name": "Supabase ConectaNet" }
       },
       "alwaysOutputData": true
     },
@@ -123,9 +130,9 @@
   ],
   "connections": {
     "Telegram Trigger - Pregunta": {
-      "main": [[{ "node": "Buscar coincidencias exactas VERIFICAR AL IMPORTAR", "type": "main", "index": 0 }]]
+      "main": [[{ "node": "Buscar coincidencia exacta VERIFICAR AL IMPORTAR", "type": "main", "index": 0 }]]
     },
-    "Buscar coincidencias exactas VERIFICAR AL IMPORTAR": {
+    "Buscar coincidencia exacta VERIFICAR AL IMPORTAR": {
       "main": [[{ "node": "Combinar resultados", "type": "main", "index": 0 }]]
     },
     "Combinar resultados": {

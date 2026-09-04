@@ -57,25 +57,28 @@ Prueba la misma pregunta con los dos perfiles y compara el tono de la respuesta.
 
 ## 5. n8n conectado a una página HTML
 
-Importa `flujos-n8n/flujo-19-rag-pdf-telegram-ingesta.json` y
-`flujos-n8n/flujo-20-rag-pdf-telegram-consulta.json` si todavía no tienes tu propio par
-ingesta/consulta corriendo. El nodo Chat Trigger expone tu flujo como endpoint — cualquier HTML
-que apunte a esa URL habla con el mismo agente que responde por Telegram.
+Ve a `mini-proyecto-1-rag-documento-propio/` e importa `ingesta-pdf-telegram-supabase.json` y
+`consulta-telegram-supabase.json` si todavía no tienes tu propio par ingesta/consulta corriendo.
+Después, en `mini-proyecto-2-widget-web-seguro/`, importa `webhook-con-header-auth.json` — es un
+nodo **Webhook normal** (no un Chat Trigger) con Header Auth, que expone tu flujo como endpoint:
+cualquier HTML que le mande la clave correcta en el header habla con el mismo agente que responde
+por Telegram. `chat-widget.html` ya trae el `fetch` armado, solo hay que pegar tu URL y tu clave.
 
 Si no tienes navegador gráfico, salta este paso visual: conecta tu Hermes (vía MCP) directo a la
 URL pública de tu túnel de n8n de ayer — mismo resultado, sin necesitar ver el HTML renderizado.
 
-## 6. RAG con Guardrails (retrofit)
+## 6. RAG híbrido (avanzado, opcional)
 
-`flujos-n8n/flujo-21-rag-telegram-consulta-guardrails.json` — mismo patrón del Día 3, ahora
-aplicado a tu documento propio. Prueba un mensaje normal y uno de prompt injection, confirma que
-la rama de bloqueo responde distinto.
+`mini-proyecto-3-rag-hibrido/rag-hibrido-exacta-vectorial.json` — búsqueda exacta primero (nodo
+Supabase nativo con filtro ILIKE, sin crear ninguna función SQL nueva), vectorial de respaldo si
+no encuentra nada. Es el mini-proyecto más avanzado del día, no pasa nada si no lo terminas.
 
 ## 7. Notion + Hermes
 
 Pídele a Hermes que resuma tu conversación del día y la guarde como una página nueva en tu base de
-Notion — o usa `flujos-n8n/flujo-22-error-a-notion.json` como referencia de cómo n8n mismo puede
-escribir en Notion directamente (adaptado, ya que ese flujo está pensado para errores).
+Notion (ver `mini-proyecto-4-notion-baul-informacion/README.md` para la estructura exacta de la
+base) — o usa `guardar-en-notion-referencia.json` de esa misma carpeta como flujo de referencia de
+cómo n8n mismo puede escribir en Notion directamente, ya con datos de ejemplo reales.
 
 ## 8. Imágenes — el framework de 4 preguntas
 

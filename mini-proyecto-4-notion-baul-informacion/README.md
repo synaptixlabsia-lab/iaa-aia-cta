@@ -3,11 +3,26 @@
 No es una base de datos de negocio (esa es Supabase, del Día 4) — es un lugar compartible con tu
 equipo donde quedan resúmenes, resultados y bitácora de lo que tu automatización hizo.
 
+## La base de datos en Notion — créala primero, antes de importar el flujo
+
+Una sola base de datos con estas propiedades exactas (los nombres importan, el flujo los busca
+tal cual):
+
+| Propiedad | Tipo en Notion | Para qué |
+|---|---|---|
+| **Name** (ya viene por defecto) | Title | "Resumen diario — 2026-09-04" |
+| **Fecha** | Date | cuándo se generó |
+| **Tipo** | Select (`Resumen diario`, `Reporte técnico`, `Investigación de mercado`) | qué clase de contenido es |
+| **Resumen** | Text | el cuerpo del resumen/reporte |
+| **Origen** | Select (`Telegram`, `n8n`, `Hermes MCP`) | por qué canal se generó/entregó |
+| **Preguntas sin responder** | Number | métrica rápida del reporte tipo A |
+
 ## Qué trae esta carpeta
 
-- `guardar-en-notion-referencia.json` — un flujo de referencia que muestra cómo n8n mismo puede
-  escribir en Notion (originalmente pensado para errores — se adapta en `PROMPT.md` para guardar
-  resúmenes en vez de solo fallos).
+- `guardar-en-notion-referencia.json` — un flujo ya armado y con datos de ejemplo reales (no un
+  esqueleto vacío): `Ejecutar manualmente → Preparar resumen (Code) → Notion - Guardar resumen`,
+  mapeado exactamente a las 5 propiedades de la tabla de arriba. Se prueba tal cual con el botón
+  "Execute workflow" antes de conectarlo a un trigger real.
 
 ## Las dos formas de hacerlo hoy
 

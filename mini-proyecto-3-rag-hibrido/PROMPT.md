@@ -3,23 +3,19 @@
 Lee `README.md` primero. Este es el mini-proyecto más avanzado del día — dile al usuario desde el
 inicio que no pasa nada si no lo termina, el objetivo es entender el patrón.
 
-## Fase 1 — Crear la función SQL
+## Fase 1 — Importar el workflow
 
-Guía al usuario a pegar `search_exact.sql` en el SQL Editor de su proyecto Supabase (el mismo del
-Día 4, no uno nuevo) y ejecutarlo. Verifica con la consulta de prueba que trae el propio archivo.
+Importa `rag-hibrido-exacta-vectorial.json`. El nodo "Buscar coincidencia exacta VERIFICAR AL
+IMPORTAR" usa la credencial **Supabase nativa** (`supabaseApi`) — la misma que ya está configurada
+del Día 4, no hay que crear ninguna credencial nueva ni pegar ninguna `service_role key`. Solo hay
+que apuntarla a la credencial Supabase real del usuario.
 
-## Fase 2 — Importar el workflow
+**Verifica al importar** que el filtro del nodo (columna `content`, condición `ilike`) aparezca
+correctamente en la sección Filters — si la versión de n8n del usuario lo muestra distinto,
+ayúdalo a armarlo ahí mismo: campo `content`, operador "contiene" o `ilike`, valor
+`%{{ texto de la pregunta }}%`.
 
-Importa `rag-hibrido-exacta-vectorial.json`. El nodo "Buscar coincidencias exactas" necesita una
-credencial de tipo **Header Auth genérico** (no Supabase nativo) con dos headers:
-`apikey` y `Authorization: Bearer <service_role key>` — la `service_role key` la encuentra el
-usuario en Supabase → Settings → API. **Nunca la pegues en el chat ni en un archivo — dile al
-usuario exactamente dónde crear la credencial en n8n.**
-
-También reemplaza `https://TU-PROYECTO.supabase.co` en la URL del nodo HTTP Request por la URL
-real del proyecto del usuario.
-
-## Fase 3 — Probar los dos caminos
+## Fase 2 — Probar los dos caminos
 
 1. Pregunta algo que sepas que coincide literalmente con una palabra del documento — debe
    responder rápido, vía la búsqueda exacta.
@@ -31,14 +27,15 @@ Reporta cada camino como `Verificado` solo si viste ambas respuestas funcionar.
 ## Prompts de prueba
 
 ```text
-Lee mini-proyecto-3. Ayúdame a crear la función search_exact en mi Supabase del
-Día 4 y a confirmar que corre bien con la consulta de prueba.
+Lee mini-proyecto-3. Ayúdame a importar rag-hibrido-exacta-vectorial.json y a
+apuntar el nodo de búsqueda exacta a mi credencial Supabase real — no necesito
+crear ninguna función SQL nueva para esto.
 ```
 
 ```text
-Importa rag-hibrido-exacta-vectorial.json. Dime exactamente dónde en n8n creo
-la credencial Header Auth con mi service_role key de Supabase — no me la pidas
-pegada en el chat.
+Confirma en el nodo "Buscar coincidencia exacta" que el filtro está configurado
+sobre la columna content con ilike. Si no aparece así, ayúdame a configurarlo
+manualmente en la sección Filters del nodo.
 ```
 
 ```text

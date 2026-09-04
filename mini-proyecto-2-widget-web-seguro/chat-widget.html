@@ -36,7 +36,7 @@
 
 <script>
 // ====== CONFIGURACIÓN — cada quien pone lo suyo aquí, nunca en el repo ======
-const N8N_CHAT_URL = "PEGA_AQUI_LA_URL_DE_TU_CHAT_TRIGGER"; // ej. https://tu-url.trycloudflare.com/webhook/xxxx/chat
+const N8N_CHAT_URL = "PEGA_AQUI_LA_URL_DE_TU_WEBHOOK"; // ej. https://tu-url.trycloudflare.com/webhook/pruebawebhook-conectanet
 const SECRET_KEY   = "PEGA_AQUI_TU_CLAVE_SECRETA";           // la misma que pusiste en Header Auth de n8n
 // =============================================================================
 
@@ -73,7 +73,7 @@ form.addEventListener('submit', async (e) => {
       headers: {
         'Content-Type': 'application/json',
         // La clave secreta va en un header — nunca en la URL ni visible en el HTML final que se publique.
-        // Configúrala como Header Auth en el nodo Chat Trigger de n8n (ver PROMPT.md de este mini-proyecto).
+        // Configúrala como Header Auth en el nodo Webhook de n8n (ver PROMPT.md de este mini-proyecto).
         'X-Secret-Key': SECRET_KEY
       },
       body: JSON.stringify({
