@@ -1,0 +1,285 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1088,
+        16
+      ],
+      "id": "76d8bb19-a0ac-4a23-ae5d-5c4bcdee7191",
+      "name": "Telegram Trigger - Recibir PDF",
+      "webhookId": "fc61354b-9e27-4ffe-81bc-2a292633bf42",
+      "credentials": {
+        "telegramApi": {
+          "id": "cdTosorvUwJwxRBy",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "fileId": "={{ $json.message.document.file_id }}",
+        "binaryProperty": "data",
+        "download": true,
+        "additionalFields": {
+          "mimeType": "application/pdf"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -848,
+        16
+      ],
+      "id": "84b3f949-9c8d-437c-9458-a718b5e1d245",
+      "name": "Telegram - Descargar PDF",
+      "webhookId": "1d965ff4-0022-4b26-9269-5b438cbdd87e",
+      "credentials": {
+        "telegramApi": {
+          "id": "cdTosorvUwJwxRBy",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "data",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        16
+      ],
+      "id": "b9638906-da4c-43dd-a29d-962d5ab7ef9d",
+      "name": "Extract From File - PDF"
+    },
+    {
+      "parameters": {
+        "jsCode": "function limpiar(valor) {\n  return String(valor ?? '').trim();\n}\n\nconst trigger = $('Telegram Trigger - Recibir PDF').first().json;\nconst texto = $json.text;\n\nreturn [{\n  json: {\n    content: limpiar(texto),\n    metadata: {\n      titulo: limpiar(trigger.message.document.file_name || 'documento-sin-nombre.pdf'),\n      origen: 'telegram',\n      fecha_ingesta: new Date().toISOString().slice(0, 10)\n    }\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -368,
+        16
+      ],
+      "id": "34b34447-b473-4491-8066-4ac287169ef2",
+      "name": "Preparar contenido y metadata"
+    },
+    {
+      "parameters": {
+        "chunkSize": 500,
+        "chunkOverlap": 50,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        16,
+        224
+      ],
+      "id": "e1f8b6a1-2f1a-4a3d-9d0d-8f0a2b6c9e11",
+      "name": "Text Splitter - Fragmentar PDF"
+    },
+    {
+      "parameters": {
+        "jsonData": "={{ $json.content }}",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "titulo",
+                "value": "={{ $json.metadata.titulo }}"
+              },
+              {
+                "name": "origen",
+                "value": "={{ $json.metadata.origen }}"
+              },
+              {
+                "name": "fecha_ingesta",
+                "value": "={{ $json.metadata.fecha_ingesta }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        16,
+        128
+      ],
+      "id": "c609838b-0823-417f-818d-3a350d8adb18",
+      "name": "Default Data Loader - Crear documentos"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -128,
+        224
+      ],
+      "id": "d46a61ba-ad64-4cbc-bb79-ec9c8edc0b89",
+      "name": "Embeddings Mistral Cloud",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "ixiYEfGkMVdcmVNo",
+          "name": "Mistral Cloud account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": "documents",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1,
+      "position": [
+        -128,
+        16
+      ],
+      "id": "d6db517e-9f97-4ea6-8ee3-898dd34587ec",
+      "name": "Supabase Vector Store - Insertar VERIFICAR AL IMPORTAR",
+      "credentials": {
+        "supabaseApi": {
+          "id": "f15-supabase-cred-id",
+          "name": "Supabase ConectaNet"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger - Recibir PDF').item.json.message.chat.id }}",
+        "text": "✅ PDF recibido e indexado en Supabase (tabla documents). Ya puedes hacer preguntas sobre este documento.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        208,
+        16
+      ],
+      "id": "608f0133-6126-48ad-a19b-9376aaa2166c",
+      "name": "Telegram - Confirmar indexacion",
+      "webhookId": "228628bc-5b49-4b7c-8faa-2e6a7f162028",
+      "credentials": {
+        "telegramApi": {
+          "id": "cdTosorvUwJwxRBy",
+          "name": "Telegram account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Telegram Trigger - Recibir PDF": {
+      "main": [
+        [
+          {
+            "node": "Telegram - Descargar PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram - Descargar PDF": {
+      "main": [
+        [
+          {
+            "node": "Extract From File - PDF",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract From File - PDF": {
+      "main": [
+        [
+          {
+            "node": "Preparar contenido y metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar contenido y metadata": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store - Insertar VERIFICAR AL IMPORTAR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Splitter - Fragmentar PDF": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader - Crear documentos",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader - Crear documentos": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store - Insertar VERIFICAR AL IMPORTAR",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Mistral Cloud": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store - Insertar VERIFICAR AL IMPORTAR",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store - Insertar VERIFICAR AL IMPORTAR": {
+      "main": [
+        [
+          {
+            "node": "Telegram - Confirmar indexacion",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "68c59b015fd4b57e0628c5b88be060c2fba1f1c321f9c4e983d9317ad2af09dd"
+  }
+}

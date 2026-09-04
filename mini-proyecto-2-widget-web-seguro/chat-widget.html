@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<title>Chat — ConectaNet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, sans-serif; background: #f0ebe0; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
+  .chat { width: 420px; max-width: 92vw; height: 600px; background: #fff; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,.15); display: flex; flex-direction: column; overflow: hidden; }
+  .chat header { background: #1e2bfa; color: #fff; padding: 18px 20px; font-weight: 600; }
+  .chat header small { display: block; font-weight: 400; opacity: .8; font-size: 12px; margin-top: 2px; }
+  .messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .msg { max-width: 80%; padding: 10px 14px; border-radius: 12px; font-size: 14px; line-height: 1.4; }
+  .msg.user { align-self: flex-end; background: #1e2bfa; color: #fff; border-bottom-right-radius: 2px; }
+  .msg.bot { align-self: flex-start; background: #eee; color: #111; border-bottom-left-radius: 2px; }
+  .msg.error { align-self: center; background: #fde2e2; color: #900; font-size: 13px; }
+  form { display: flex; border-top: 1px solid #eee; }
+  input { flex: 1; border: none; padding: 14px 16px; font-size: 14px; outline: none; }
+  button { border: none; background: #1e2bfa; color: #fff; padding: 0 20px; font-weight: 600; cursor: pointer; }
+  button:disabled { opacity: .5; cursor: default; }
+</style>
+</head>
+<body>
+<div class="chat">
+  <header>
+    Asistente ConectaNet
+    <small>Conectado a n8n — widget del laboratorio Día 5</small>
+  </header>
+  <div class="messages" id="messages"></div>
+  <form id="form">
+    <input id="input" type="text" placeholder="Escribe tu pregunta..." autocomplete="off" />
+    <button type="submit" id="send">Enviar</button>
+  </form>
+</div>
+
+<script>
+// ====== CONFIGURACIÓN — cada quien pone lo suyo aquí, nunca en el repo ======
+const N8N_CHAT_URL = "PEGA_AQUI_LA_URL_DE_TU_CHAT_TRIGGER"; // ej. https://tu-url.trycloudflare.com/webhook/xxxx/chat
+const SECRET_KEY   = "PEGA_AQUI_TU_CLAVE_SECRETA";           // la misma que pusiste en Header Auth de n8n
+// =============================================================================
+
+const messagesEl = document.getElementById('messages');
+const form = document.getElementById('form');
+const input = document.getElementById('input');
+const sendBtn = document.getElementById('send');
+
+// sessionId simple, persiste mientras la pestaña esté abierta — cada visitante es una sesión distinta
+const sessionId = 'widget-' + Math.random().toString(36).slice(2, 10);
+
+function addMessage(text, kind) {
+  const div = document.createElement('div');
+  div.className = 'msg ' + kind;
+  div.textContent = text;
+  messagesEl.appendChild(div);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+addMessage('¡Hola! Pregúntame sobre el documento cargado.', 'bot');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const text = input.value.trim();
+  if (!text) return;
+
+  addMessage(text, 'user');
+  input.value = '';
+  sendBtn.disabled = true;
+
+  try {
+    const res = await fetch(N8N_CHAT_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        // La clave secreta va en un header — nunca en la URL ni visible en el HTML final que se publique.
+        // Configúrala como Header Auth en el nodo Chat Trigger de n8n (ver PROMPT.md de este mini-proyecto).
+        'X-Secret-Key': SECRET_KEY
+      },
+      body: JSON.stringify({
+        chatInput: text,
+        sessionId: sessionId
+      })
+    });
+
+    if (!res.ok) {
+      addMessage('El servidor rechazó la solicitud (código ' + res.status + ') — revisa la clave secreta.', 'error');
+      return;
+    }
+
+    const data = await res.json();
+    addMessage(data.output || data.response || JSON.stringify(data), 'bot');
+  } catch (err) {
+    addMessage('No se pudo conectar con n8n — revisa la URL y que el túnel siga activo.', 'error');
+  } finally {
+    sendBtn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

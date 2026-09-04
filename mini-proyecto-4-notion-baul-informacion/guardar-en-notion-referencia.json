@@ -1,0 +1,80 @@
+{
+  "name": "Flujo 22 - Workflow de errores - Log a Notion VERIFICAR AL IMPORTAR",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [0, 0],
+      "id": "f22-error-trigger",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $json;\n\nreturn [{\n  json: {\n    workflow_nombre: data.workflow?.name || 'workflow sin nombre',\n    error_mensaje: data.execution?.error?.message || data.execution?.lastNodeExecuted || 'sin detalle',\n    nodo_fallido: data.execution?.error?.node?.name || data.execution?.lastNodeExecuted || 'desconocido',\n    fecha: new Date().toISOString(),\n    link_ejecucion: data.execution?.url || ''\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [240, 0],
+      "id": "f22-code-format",
+      "name": "Formatear datos del error"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "create",
+        "databaseId": {
+          "__rl": true,
+          "value": "VERIFICAR-AL-IMPORTAR-database-id",
+          "mode": "id"
+        },
+        "title": "={{ $json.workflow_nombre }} - {{ $json.fecha }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Workflow|rich_text",
+              "textContent": "={{ $json.workflow_nombre }}"
+            },
+            {
+              "key": "Error|rich_text",
+              "textContent": "={{ $json.error_mensaje }}"
+            },
+            {
+              "key": "Nodo|rich_text",
+              "textContent": "={{ $json.nodo_fallido }}"
+            },
+            {
+              "key": "Fecha|date",
+              "date": "={{ $json.fecha }}"
+            },
+            {
+              "key": "Link ejecucion|url",
+              "urlValue": "={{ $json.link_ejecucion }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [480, 0],
+      "id": "f22-notion-create",
+      "name": "Notion - Registrar error VERIFICAR AL IMPORTAR",
+      "credentials": {
+        "notionApi": { "id": "VERIFICAR-AL-IMPORTAR", "name": "Notion account" }
+      }
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [[{ "node": "Formatear datos del error", "type": "main", "index": 0 }]]
+    },
+    "Formatear datos del error": {
+      "main": [[{ "node": "Notion - Registrar error VERIFICAR AL IMPORTAR", "type": "main", "index": 0 }]]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": false
+  }
+}
