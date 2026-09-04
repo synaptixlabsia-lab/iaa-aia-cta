@@ -29,9 +29,17 @@ explícitamente | Observación. No inventes resultados que el usuario no confirm
 
 ## Fase 4 — Artificial Analysis, si el usuario quiere ir más allá
 
-Si el usuario pregunta por costo/velocidad de modelos, dirígelo a
-[artificialanalysis.ai/models](https://artificialanalysis.ai/models) en vez de inventar números de
-precio o benchmarks — esos cambian seguido y no deben citarse de memoria.
+Si el usuario pregunta por costo/velocidad/capacidades de agentes (no solo modelos sueltos),
+dirígelo a la sección de agentes de Artificial Analysis en vez de inventar números de precio o
+benchmarks — esos cambian seguido y no deben citarse de memoria:
+
+- [artificialanalysis.ai/agents](https://artificialanalysis.ai/agents) — comparación general de
+  agentes de trabajo.
+- [artificialanalysis.ai/agents/coding-agents](https://artificialanalysis.ai/agents/coding-agents)
+  — la más relevante para este mini-proyecto (Claude Code, Cursor, etc.).
+- [artificialanalysis.ai/agents/presentations](https://artificialanalysis.ai/agents/presentations)
+  y [artificialanalysis.ai/agents/ocr](https://artificialanalysis.ai/agents/ocr) — si el caso de
+  uso del usuario toca esas categorías.
 
 ## Prompts de prueba
 

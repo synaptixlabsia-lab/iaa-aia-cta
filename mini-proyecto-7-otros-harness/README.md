@@ -31,18 +31,25 @@ contenido, tres formatos distintos.
 archivo de reglas bien escrito cambia el comportamiento real, y que no todos los harness lo
 respetan con la misma consistencia.**
 
-## Artificial Analysis — para comparar los modelos por debajo, no solo las herramientas
+## Artificial Analysis — la comparación de agentes, no solo de modelos
 
-Cada harness de arriba puede correr con distintos modelos por debajo (Claude Code con modelos
-Claude, Cursor con varios proveedores, ChatGPT con modelos GPT). Antes de asumir "cuál es mejor",
-[Artificial Analysis](https://artificialanalysis.ai/models) da comparaciones independientes de:
+Además de comparar los 3 harness entre sí, Artificial Analysis tiene una sección específica de
+**agentes** (no solo modelos sueltos) — más relevante para hoy que la tabla general de modelos:
 
-- **Intelligence Index** — un puntaje compuesto sobre varios benchmarks de razonamiento/código.
-- **Precio** — costo por millón de tokens de entrada/salida, por modelo y por proveedor.
-- **Velocidad de salida y latencia** — cuántos tokens por segundo entrega, y cuánto tarda en
-  responder el primer token.
+- **[artificialanalysis.ai/agents](https://artificialanalysis.ai/agents)** — comparación general
+  de agentes de trabajo: disponibilidad por plataforma (Web/Mac/Windows/Linux), si son open-source,
+  si dejan elegir el modelo por debajo, acceso a archivos locales, automatización de navegador, y
+  precio — categorías que incluyen Coding Agents, Presentaciones, OCR, Análisis de datos y
+  Atención al cliente.
+- **[artificialanalysis.ai/agents/coding-agents](https://artificialanalysis.ai/agents/coding-agents)**
+  — la más directamente relevante para este mini-proyecto: compara Claude Code, Cursor y otros
+  agentes de código entre sí, con las mismas categorías de arriba.
+- **[artificialanalysis.ai/agents/presentations](https://artificialanalysis.ai/agents/presentations)**
+  — relevante si conectan generación de diapositivas/reportes visuales a su flujo.
+- **[artificialanalysis.ai/agents/ocr](https://artificialanalysis.ai/agents/ocr)** — relevante si
+  el caso ISP necesita leer documentos escaneados (contratos, facturas) antes de meterlos al RAG.
 
 Para el caso ISP: si van a automatizar algo con volumen alto (por ejemplo, generar mil respuestas
-al día), el costo y la velocidad importan tanto como la calidad — [la tabla de modelos de
-Artificial Analysis](https://artificialanalysis.ai/models) permite comparar eso antes de elegir
-qué modelo conectar en n8n o en el harness que usen.
+al día), el costo y la velocidad importan tanto como la calidad — comparen en estas páginas antes
+de elegir qué herramienta o modelo conectar en n8n o en el harness que usen, en vez de asumir
+"cuál es mejor" de memoria.
