@@ -32,6 +32,7 @@ lab-dia-5/
   mini-proyecto-4-notion-baul-informacion/   ← Notion + Hermes
   mini-proyecto-5-generacion-imagenes/       ← framework de 4 preguntas, sin código
   mini-proyecto-6-flota-de-agentes/          ← Bot Mode nativo de Hermes, el cierre del día
+  mini-proyecto-7-otros-harness/             ← Claude Code / Cursor / ChatGPT + Artificial Analysis
 ```
 
 ## Regla de credenciales — importante

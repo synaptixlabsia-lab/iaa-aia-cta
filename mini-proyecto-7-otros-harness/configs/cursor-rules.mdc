@@ -1,0 +1,22 @@
+---
+description: Reglas del proyecto ConectaNet
+alwaysApply: true
+---
+
+# Reglas del proyecto ConectaNet (ejemplo — Cursor)
+
+Este archivo va en `.cursor/rules/conectanet.mdc` dentro del proyecto (formato moderno de Cursor,
+2026). El viejo `.cursorrules` en la raíz todavía funciona pero está en desuso — si tienes ambos,
+este `.mdc` gana y el `.cursorrules` se ignora sin avisar, así que usa solo uno.
+
+## Reglas obligatorias
+
+1. **Nunca inventes datos de clientes.** Si necesitas un ejemplo, usa datos claramente ficticios
+   marcados como tal ("Cliente de ejemplo", no un nombre real).
+2. **Nunca uses un nodo `IF` comparando una clave secreta para autenticar un webhook.** Ese patrón
+   ya se probó y falla en rechazar tokens inválidos de forma confiable. Usa Header Auth nativo de
+   n8n, configurado en la pestaña Authentication del nodo Webhook.
+3. **Avisa antes de tocar cualquier credencial, API key o archivo `.env`.** Nunca las muestres en
+   texto plano en tu respuesta, ni las escribas directamente en un archivo del repo.
+4. **Pregunta antes de hacer `git push` o publicar cualquier cosa.** Un commit local está bien;
+   publicarlo requiere confirmación explícita.
