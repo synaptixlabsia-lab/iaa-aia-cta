@@ -8,11 +8,11 @@ funcionando, y tu RAG propio respondiendo sobre Supabase. Hoy no se repite nada 
 No hace falta instalar nada nuevo aparte de Docker (que ya funciona desde ayer). Un contenedor
 más, no una herramienta distinta.
 
-**Setup inicial:**
+**Setup inicial** — una sola línea, sin `\` de continuación. Con `$HOME` en vez de `~`, corre
+igual en bash, zsh y PowerShell, así que es el mismo comando para todos sin importar el sistema:
 
 ```bash
-mkdir -p ~/.hermes
-docker run -it --rm -v ~/.hermes:/opt/data nousresearch/hermes-agent setup
+docker run -it --rm -v $HOME/.hermes:/opt/data nousresearch/hermes-agent setup
 ```
 
 Este asistente pregunta por proveedor de modelo, backend, y plataforma de mensajería — se responde
@@ -21,22 +21,10 @@ sobre la marcha, no hay pantallas fijas que memorizar.
 **Dejarlo corriendo con el Dashboard accesible por navegador:**
 
 ```bash
-docker run -d --name hermes --restart unless-stopped \
-  -v ~/.hermes:/opt/data \
-  -p 9119:9119 \
-  -e HERMES_DASHBOARD=1 -e HERMES_DASHBOARD_HOST=0.0.0.0 \
-  -e HERMES_DASHBOARD_BASIC_AUTH_USERNAME=alumno \
-  -e HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=cambia-esta-clave \
-  nousresearch/hermes-agent gateway run
-```
-
-En Windows (PowerShell), el mismo comando en una sola línea con `$HOME` en vez de `~`:
-
-```powershell
 docker run -d --name hermes --restart unless-stopped -v $HOME/.hermes:/opt/data -p 9119:9119 -e HERMES_DASHBOARD=1 -e HERMES_DASHBOARD_HOST=0.0.0.0 -e HERMES_DASHBOARD_BASIC_AUTH_USERNAME=alumno -e HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=cambia-esta-clave nousresearch/hermes-agent gateway run
 ```
 
-**Las dos líneas `HERMES_DASHBOARD_BASIC_AUTH_*` son obligatorias** — sin ellas Hermes se niega a
+**Las dos partes `HERMES_DASHBOARD_BASIC_AUTH_*` son obligatorias** — sin ellas Hermes se niega a
 exponer el dashboard en `0.0.0.0` (confirmado probándolo en vivo) y `localhost:9119` nunca
 responde. Cambien `alumno`/`cambia-esta-clave` por lo suyo; se puede cambiar después recreando el
 contenedor (`docker rm -f hermes` + repetir el comando con la clave nueva), sin perder nada porque
