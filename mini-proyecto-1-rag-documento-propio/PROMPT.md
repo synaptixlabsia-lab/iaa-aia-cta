@@ -46,3 +46,16 @@ nodos necesito seleccionar mis credenciales.
 Ya subí un PDF de prueba por Telegram. Ayúdame a confirmar en Supabase que la
 tabla documents tiene filas nuevas antes de seguir con la consulta.
 ```
+
+**Prompt todo-en-uno** (para quien prefiera dar la instrucción completa de una vez, en vez de ir
+fase por fase — Hermes igual debe pedir confirmación antes de cada paso que la requiera):
+
+```text
+Ejecuta el mini-proyecto 1 completo: verifica que mi n8n y mi tabla documents
+siguen activos, importa ingesta-pdf-telegram-supabase.json y dime en qué nodos
+poner mis credenciales, espera a que te confirme que ya subí un PDF de prueba
+por Telegram, verifica en Supabase que llegaron filas nuevas, y solo entonces
+importa consulta-telegram-supabase.json y sugiéreme 3 preguntas que el
+documento sí responde y 1 que no. Repórtame el estado (Verificado/Pendiente/
+Bloqueado) después de cada fase, no solo al final.
+```

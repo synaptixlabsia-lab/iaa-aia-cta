@@ -61,3 +61,17 @@ Prueba mi widget con la clave correcta, y después con una clave incorrecta a
 propósito. Confírmame con evidencia real que la segunda vez se rechaza antes
 de llegar al agente.
 ```
+
+**Prompt todo-en-uno** (para quien prefiera dar la instrucción completa de una vez, en vez de ir
+fase por fase — Hermes igual debe pedir confirmación antes de cada paso que la requiera):
+
+```text
+Ejecuta el mini-proyecto 2 completo: si no tengo un HTML de partida, constrúyeme
+uno simple a partir de chat-widget.html; importa webhook-con-header-auth.json y
+configura Header Auth real en el nodo Webhook (nunca un nodo IF comparando la
+clave); ayúdame a generar la clave secreta y ponla solo en la credencial de n8n
+y en el HTML, nunca en un archivo del repo; y al final prueba el widget con la
+clave correcta y luego con una incorrecta a propósito, confirmando con
+evidencia real que la segunda vez se rechaza antes de llegar al AI Agent.
+Repórtame el estado después de cada fase, no solo al final.
+```

@@ -1,5 +1,28 @@
 # Mini-proyecto 2 — Tu n8n conectado a una página web, con seguridad real
 
+## Cómo se conecta (visual)
+
+```text
+chat-widget.html (en el navegador)
+   │  fetch(N8N_CHAT_URL, { headers: { 'X-Secret-Key': SECRET_KEY }, body: {chatInput, sessionId} })
+   ▼
+n8n — Webhook (authentication: Header Auth)
+   ├── ¿header coincide con la credencial? → NO → rechaza aquí mismo, nunca sigue
+   └── SÍ
+        ▼
+      Preparar Input (Set) — extrae chatInput/sessionId de $json.body
+        ▼
+      AI Agent — responde usando tu RAG (mini-proyecto 1/3) si aplica
+        ▼
+      Respond to Webhook — devuelve { "output": "..." } en JSON
+        ▼
+chat-widget.html — pinta la respuesta en el chat
+```
+
+La prueba real es forzar el camino de la izquierda: cambia la clave a propósito en el HTML y
+confirma que el flujo rechaza ANTES de llegar al nodo Set — si llega al AI Agent con una clave
+mala, Header Auth no está bien configurado.
+
 ## Qué trae esta carpeta
 
 - `chat-widget.html` — un widget de chat embebible, ya con el header de la clave secreta

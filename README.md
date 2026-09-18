@@ -1,4 +1,4 @@
-# Laboratorio Día 5 — cohorte 260831
+# Laboratorio Día 5 — cohorte 260914
 
 Este repo es el que se comparte con los alumnos el Día 5. Está pensado para que, **incluso si en
 clase no alcanzamos a probar todo en vivo, cada quien pueda seguir practicando por su cuenta** —

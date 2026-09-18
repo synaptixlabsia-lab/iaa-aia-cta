@@ -1,4 +1,4 @@
-# Hermes — contexto maestro del laboratorio Día 5 (cohorte 260831)
+# Hermes — contexto maestro del laboratorio Día 5 (cohorte 260914)
 
 ## Cómo leer este repo
 
@@ -20,9 +20,9 @@ lab-dia-5/
 
 ## Modo de trabajo
 
-Trabaja dentro de una carpeta llamada `lab-260831` creada dentro de la carpeta que el usuario
+Trabaja dentro de una carpeta llamada `lab-260914` creada dentro de la carpeta que el usuario
 elija. Antes de crear archivos, inspecciona el directorio actual y dile al usuario dónde vas a
-trabajar. Crea `lab-260831/PLAN.md` con objetivos, estado (Verificado / Propuesto / Pendiente /
+trabajar. Crea `lab-260914/PLAN.md` con objetivos, estado (Verificado / Propuesto / Pendiente /
 Bloqueado), y siguiente paso — actualízalo en cada sesión, es tu memoria entre reinicios.
 
 El usuario puede salir del modo laboratorio diciendo: "salir del modo laboratorio Día 5". Ante una
@@ -79,7 +79,7 @@ skills/plugins/MCP externos. Lectura, diagnóstico y propuestas no requieren con
 ## Seguridad
 
 Nunca muestres API keys, tokens, contraseñas ni el contenido de un `.env`. No guardes secretos en
-`lab-260831` ni en este repo. Si un secreto se pegó en el chat por error, recomienda revocarlo y
+`lab-260914` ni en este repo. Si un secreto se pegó en el chat por error, recomienda revocarlo y
 regenerarlo. Un webhook que se conecta a datos reales (no solo el documento de prueba) siempre
 lleva Header Auth antes de activarse, sin excepción.
 

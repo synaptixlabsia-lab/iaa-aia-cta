@@ -3,6 +3,24 @@
 Ingesta un PDF por Telegram, lo guarda en tu Supabase del Día 4, y responde preguntas sobre él —
 con una versión adicional que agrega Guardrails.
 
+## Cómo se conecta (visual)
+
+```text
+INGESTA (una sola vez por documento)
+Telegram (subes tu PDF)
+   → Telegram: descargar archivo
+   → Extract from File (PDF a texto)
+   → Text Splitter + Embeddings (Mistral)
+   → Supabase Vector Store: Insertar → tabla `documents`
+
+CONSULTA (cada vez que preguntas)
+Telegram (tu pregunta)
+   → AI Agent (con memoria de la conversación)
+       ├── usa Supabase como herramienta (retrieve-as-tool)
+       └── [opcional: consulta-con-guardrails.json añade un filtro ANTES del Agent]
+   → Telegram: responde citando el documento, o dice "no sé" si no hay evidencia
+```
+
 ## Qué trae esta carpeta
 
 - `ingesta-pdf-telegram-supabase.json` — recibe un PDF por Telegram, lo fragmenta, genera

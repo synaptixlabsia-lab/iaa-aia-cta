@@ -1,4 +1,4 @@
-# Guía práctica — Día 5 (cohorte 260831)
+# Guía práctica — Día 5 (cohorte 260914)
 
 Da por hecho que ya tienes de ayer (Día 4): n8n corriendo local con Docker, el túnel público
 funcionando, y tu RAG propio respondiendo sobre Supabase. Hoy no se repite nada de eso.
